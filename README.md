@@ -51,6 +51,7 @@ This project involves developing a C++ implementation of the Risk board game, co
 - Ruairi Connor-Mondor (40248427
 - Shant Balouzian (40226237)
 - Nesrine Larbi (40079009)
+- Vladimir Shterenkiker (40158317)
 
 ## Project Status
 
