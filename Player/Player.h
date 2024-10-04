@@ -7,9 +7,9 @@
 
 // TODO: update includes when add your folders ...
 
-#include "../Map.hpp"  
-#include "../Orders.hpp"     
-#include "../Cards.hpp"      
+#include "../Map.h"  
+#include "../Orders.h"     
+#include "../Cards.h"      
 
  #include "../OrderPTest.h"
 
