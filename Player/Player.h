@@ -4,47 +4,30 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-// TODO: update includes when add your folders ...
-
-#include "../Map.h"  
-#include "../Orders.h"     
-#include "../Cards.h"      
-
- #include "../OrderPTest.h"
-
+#include "../Orders.h"  // Include Orders.h for Order-related classes
 
 using namespace std;
 
-class player{
-
+class Player {
 public:
- // Constructors
-Player();    
-Player(string name, vector<string*> t, vector<string*> h, vector<Order*> o);  
-Player(const Player& p);    
- ~Player();                 // Destructor
+    // Constructors
+    Player();
+    Player(const string& newName, const vector<string>& t, const vector<string>& h, const vector<Order*>& o);
+    Player(const Player& p);
+    ~Player();                 // Destructor
 
-
-// Methods 
- void toAttack();         // Print territories to attack
- // vector<string>* toDefend();  
- void toDefend();            // Print territories to defend
- void issueOrder(string order);    // Issue a new order
- vector<Order*> getOrderList();      // Get the list of orders
- void printOrder();           // Print all orders
-
+    // Methods
+    void toAttack() const;         // Print territories to attack
+    void toDefend() const;         // Print territories to defend
+    void issueOrder(const string& orderName); // Issue a new order based on a string
+    vector<Order*> getOrderList() const;   // Get the list of orders
+    void printOrder() const;       // Print all orders
 
 private:
-
- string* name;        // name of the player (pointer)
- vector<string*> terriorty;    names
- vector<string*> handCard;      
- vector<Order*> orderList;     
-
-
-
-
-
+    string name;                   // Name of the player
+    vector<string> territory;
+    vector<string> handCard;
+    vector<Order*> orderList;
 };
+
 #endif 

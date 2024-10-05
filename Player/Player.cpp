@@ -1,103 +1,62 @@
-
 #include "Player.h"
 
-using namespace std;
-
-//defualt constructor
-Player::Player() {
-   string name;
-	vector<string*> terriorty;
-	vector<string*> handCard;
-	vector<Order*> orderList;
-}
+// Default constructor
+Player::Player() : name("Default") {}
 
 // Parameterized constructor
-Player::Player(string* name, vector<string*> t, vector<string*> h, vector<Order*> o) 
-{
-    this->name = name;           
-    this->terriorty = t;                           
-    this->handCard = h;                           
-    this->orderList = o;                           
-}
+Player::Player(const string& newName, const vector<string>& t, const vector<string>& h, const vector<Order*>& o)
+        : name(newName), territory(t), handCard(h), orderList(o) {}
 
 // Copy constructor
-Player::Player(const Player& p) 
-{
-    name = new string(*p.name);                   
-    terriorty = p.terriorty;                       // shallow copy territories
-    handCard = p.handCard;                    
-    orderList = vector<Order*>();    // initialize a new vector for orders
-
-    // Deep copy of orderList
+Player::Player(const Player& p)
+        : name(p.name), territory(p.territory), handCard(p.handCard) {
     for (Order* order : p.orderList) {
-        orderList.push_back(new Order(*order));     //
-  }}
-
-
-// Destructor
-Player::~Player()
-{
-    name.clear();                                
-    for (auto territory : terriorty) {
-        delete territory;             // free each territory string pointer
+        orderList.push_back(new Order(*order));  // Assuming Order has a proper copy constructor
     }
-    terriorty.clear();                         
-    for (auto card : handCard) {
-        delete card;            // free each hand card string pointer
-    }
-    handCard.clear();               
-    for (auto order : orderList) {
-        delete order;       
-    }
-    orderList.clear();         // Clear orders vector
 }
 
+// Destructor
+Player::~Player() {
+    for (auto order : orderList) {
+        delete order;
+    }
+}
 
 // Print territories to attack
-void Player::toAttack() 
-{
+void Player::toAttack() const {
     cout << "Territories to attack: ";
-    for (int i = 0; i < terriorty.size(); i++) 
-    {
-        cout << *terriorty[i] << " ";  //assuming territory names: stored as strings
+    for (const auto& terr : territory) {
+        cout << terr << " ";
     }
     cout << endl;
 }
 
-
-
-void Player::toDefend() 
-{
+// Print territories to defend
+void Player::toDefend() const {
     cout << "Territories to defend: ";
-    for (int i = 0; i < terriorty.size(); i++)
-    {
-        cout << *terriorty[i] << " ";             
+    for (const auto& terr : territory) {
+        cout << terr << " ";
     }
-     cout << endl
-
+    cout << endl;
 }
 
-// Issue a new order
-void Player::issueOrder(string order) 
-{
-    Order* a = new Order(order);                  // create a new Order
-    orderList.push_back(a);                       //add to the order list
-}
+// Issue a new order based on a string
+void Player::issueOrder(const string& orderName) {
+    Order* order = new Order();
+    order->name = new string(orderName);
+    orderList.push_back(order);
 
+}
 
 // Get the list of orders
-vector<Order*> Player::getOrderList() 
-{
-    return orderList;          // return the order list
+vector<Order*> Player::getOrderList() const {
+    return orderList;
 }
 
 // Print all orders
-void Player::printOrder() 
-{
+void Player::printOrder() const {
     cout << "Orders: ";
-    for (auto order : orderList) 
-    {
-        cout << order->getResult() << " ";      
+    for (auto order : orderList) {
+        cout << *order->name << endl;  // Assuming Order has a name pointer initialized correctly.
     }
-    cout << endl;
 }
