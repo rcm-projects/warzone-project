@@ -208,7 +208,7 @@ void GameEngine::startupPhase (){
         } else if (command == "gamestart" | command == "4"){
             distributeTerritories();
             giveArmies();
-            //drawInitialCards();
+            drawInitialCards();
             //playPhase();
         } else if (command == "exit" | command == "5") {
             break;
@@ -249,13 +249,13 @@ void GameEngine::validatemap(){
 
 // add player
 void GameEngine::addPlayer(const string name){
-    Player newPlayer;
-    newPlayer.setName(name);
+    Player* newPlayer = new Player();//change bc players needs to be a vector of pointers
+    newPlayer->setName(name);
     players.push_back(newPlayer);
     cout << "A new player has been added!\n";
     cout << "The current players are: \n";
     for (const auto& gamer : players) {
-        cout << gamer.getName() << "\n";
+        cout << gamer->getName() << "\n";
     }
 }
 
@@ -278,9 +278,9 @@ void GameEngine::distributeTerritories() {
     for (size_t i = 0; i < numTerritories; ++i) {
         size_t playerIndex = i % numPlayers;
 
-        players[playerIndex].addTerritory(gameMap.territories[i].getName());
+        players[playerIndex]->addTerritory(gameMap.territories[i].getName());
         std::cout << "Assigned territory " << gameMap.territories[i].getName()
-                  << " to player " << players[playerIndex].getName() << ".\n";
+                  << " to player " << players[playerIndex]->getName() << ".\n";
     }
     std::cout << "Territory distribution complete.\n";
 }
@@ -289,8 +289,8 @@ void GameEngine::distributeTerritories() {
 void GameEngine::giveArmies(){
     size_t numPlayers = players.size();
         for (size_t i = 0; i < numPlayers; i++) {
-            players[i].setArmies(50);
-            cout << "Player " << players[i].getName() << " received 50 army units.\n";  
+            players[i]->setArmies(50);
+            cout << "Player " << players[i]->getName() << " received 50 army units.\n";  
         }
 }
 
@@ -301,18 +301,19 @@ void GameEngine::determinePlayOrder() {
     std::shuffle(players.begin(), players.end(), rng);
     std::cout << "Randomized order of play:" << std::endl;
     for (size_t i = 0; i < players.size(); ++i) {
-        std::cout << "Player " << players[i].getName() << " will play in position " << (i + 1) << std::endl;
+        std::cout << "Player " << players[i]->getName() << " will play in position " << (i + 1) << std::endl;
     }
 }
 
 // draw cards
 void GameEngine::drawInitialCards() {
-    for (Player& player : players) {
+    Deck* deck = new Deck;
+    for (Player* player : players) {
             for (int i = 0; i < 2; ++i) {
                 Card* drawnCard = deck->draw();
                 if (drawnCard) {
-                    player.addCardToHand(drawnCard);
-                    player.getHandCards();
+                    player->getHandCards()->AddCardToHand(drawnCard);
+                    player->getHandCards()->ShowCardInHand();
                 } else {
                     cout << "The deck is empty; cannot draw more cards." << endl;
                     break;

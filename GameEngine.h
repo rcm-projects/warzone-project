@@ -53,6 +53,6 @@ public:
 private:
     map<string, vector<string>>* states;
     Map gameMap;
-    vector <Player> players;
+    vector <Player*> players;
     Deck* deck;
 };

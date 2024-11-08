@@ -32,7 +32,7 @@ private:
 };
 
 
-class Deck: public Card{
+class Deck : public Card{
 public: 
     Deck(int CardsInDeck = 30);
     ~Deck();
@@ -51,6 +51,7 @@ public:
     
 	Hand();
 	~Hand();
+    Hand* operator->();
     void AddCardToHand(Card* card);
     void RemoveCardFromHand(Card* card);
     void ShowCardInHand();

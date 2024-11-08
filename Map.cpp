@@ -296,7 +296,7 @@ bool Map::validate() {
 
 // Loads map data from a file.
 void MapLoader::loadMap(){
-    ifstream file("/GameMaps/Africa.map");
+    ifstream file("GameMaps/Africa.map");
     string line;
 
     vector<Map> map;
@@ -407,11 +407,11 @@ Map MapLoader::loadMap(string map) const {
     string select_map = map;
     ifstream file;
     if(select_map == "USA"){
-        file.open("/GameMaps/USA.map");
+        file.open("GameMaps/USA.map");
     } else if (select_map == "Africa"){
-        file.open("/Africa.map");
+        file.open("GameMaps/Africa.map");
     } else if (select_map == "Alberta"){
-        file.open("/Alberta.map");
+        file.open("GameMaps/Alberta.map");
     }
     
     string line;

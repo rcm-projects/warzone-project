@@ -1,15 +1,15 @@
 #include "Player.h"
 
 // Default constructor
-Player::Player() : name("Default") {}
+Player::Player() :name("Default"), playerHand(new Hand()) {}
 
-// Parameterized constructor
-Player::Player(const string& newName, const vector<string>& t, const vector<string>& h, const vector<Order*>& o)
-        : name(newName), territory(t), handCard(h), orderList(o) {}
+//Parameterized constructor
+Player::Player(const string& newName, const vector<string>& t, Hand*  h, const vector<Order*>& o)
+        : name(newName), territory(t), playerHand(h), orderList(o) {}
 
 // Copy constructor
 Player::Player(const Player& p)
-        : name(p.name), territory(p.territory), handCard(p.handCard) {
+        : name(p.name), territory(p.territory), playerHand(p.playerHand) {
     for (Order* order : p.orderList) {
         orderList.push_back(new Order(*order));  // Assuming Order has a proper copy constructor
     }
@@ -20,6 +20,7 @@ Player::~Player() {
     for (auto order : orderList) {
         delete order;
     }
+    delete playerHand;
 }
 
 // Print territories to attack
@@ -90,11 +91,9 @@ void Player::setArmies(const int number){
     armies = number;
 }
 
-// add card to hand
-void Player::addCardToHand(Card* card) {
-    handCards->AddCardToHand(card);
-}
-
-void Player::getHandCards() const{
-    handCards->ShowCardInHand();
+Hand& Player::getHandCards() {
+    if (playerHand) {
+        return *playerHand;
+    }
+    throw std::runtime_error("handCards is null");
 }

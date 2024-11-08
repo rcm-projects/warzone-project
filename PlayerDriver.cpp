@@ -1,3 +1,4 @@
+
 // PlayerDriver.cpp
 #include "Player.h"
 
@@ -7,7 +8,8 @@ using namespace std;
 void testPlayers() {
     // Vectors to hold territory names, cards, and orders
     vector<string> territories;
-    vector<string> cards;
+    //vector<string> cards;
+    Hand* playerHand = new Hand();
     vector<Order*> orders;
 
     // Define territories
@@ -15,12 +17,12 @@ void testPlayers() {
     territories.emplace_back("Europe");
 
     // Define cards
-    cards.emplace_back("Attack");
-    cards.emplace_back("Defense");
+    //cards.emplace_back("Attack");
+    //cards.emplace_back("Defense");
 
     // Create a player
     string playerName = "Alice";
-    Player player1(playerName, territories, cards, orders);
+    Player player1(playerName, territories, playerHand, orders);
 
     // Issue orders and display them
     player1.issueOrder("Deploy troops");
