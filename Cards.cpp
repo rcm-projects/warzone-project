@@ -21,6 +21,10 @@ CardType Card::getType() const {
 }
 
 Card* Deck::draw(){
+    if (deck.empty()) {
+        std::cerr << "The deck is empty. Cannot draw a card." << std::endl;
+        return nullptr;
+    }
     //choose a random number from the cards in the deck
     srand(time(0));
     int randomNum = rand() % deck.size();
@@ -50,7 +54,7 @@ void Hand::RemoveCardFromHand(Card* card){
 
 }
 
-//play mehtod
+//play method
 void Card::play(Hand*hand, Deck *deck){
     cout << "The card being played is: ";
     cout << CardTypeToString(this->getType()) << endl;
@@ -101,6 +105,10 @@ Hand::Hand(){
 //destructor
 Hand::~Hand(){
 
+}
+
+Hand* Hand::operator->(){
+    return this;
 }
 
 //method to show cards in hand

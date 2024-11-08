@@ -24,11 +24,11 @@ void testCards(){
     delete hand;
     delete deck;
 }
-int main(){
-
-    testCards();
-
-}
+//int main(){
+//
+//    testCards();
+//
+//}
 
 
   

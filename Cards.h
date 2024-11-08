@@ -6,8 +6,9 @@ using namespace std;
 class Hand;
 class Deck;
 enum CardType { Bomb, Reinforcement, Blockade, Airlift, Diplomacy };
-class Card{
 
+
+class Card{
 public:
     Card(CardType type);
     Card();
@@ -30,16 +31,16 @@ private:
     CardType type;
 };
 
-class Deck: public Card{
 
+class Deck : public Card{
 public: 
     Deck(int CardsInDeck = 30);
     ~Deck();
    Card* draw();
    void AddCardToDeck(Card* card);
    void ShowCardInDeck();
-
-private: 
+    
+private:
     vector<Card*> deck;
     Card* tempCard;
 };
@@ -47,8 +48,10 @@ private:
 class Hand: public Deck{
 
 public:
+    
 	Hand();
 	~Hand();
+    Hand* operator->();
     void AddCardToHand(Card* card);
     void RemoveCardFromHand(Card* card);
     void ShowCardInHand();

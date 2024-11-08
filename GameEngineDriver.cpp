@@ -13,6 +13,19 @@ void testGameStates() {
 	engine.Run();
 }
 
-void main() {
-	testGameStates();
+
+//---------------------------------------------------------
+//             Game startup phase
+//---------------------------------------------------------
+
+void testStartupPhase(){
+    GameEngine engine;
+    engine.startupPhase();
+
+}
+
+
+int main() {
+	//testGameStates();
+	testStartupPhase();
 }
