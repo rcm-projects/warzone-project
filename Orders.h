@@ -1,125 +1,297 @@
+#// Orders.h
+
 #ifndef ORDERS_H
 #define ORDERS_H
 
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
+#include "../LoggingObserver/LoggingObserver.h"
 
-// Base class for all orders
-class Order
+// Forward declarations
+class Player;
+class Territory;
+
+/**
+ * @brief Base Order Class
+ */
+class Order : public Subject, public Iloggable
 {
-protected:
-    std::string *effect; // Effect of the order after execution
-    bool *executed;      // Status to check if the order has been executed
-
 public:
-    std::string *name; // Name of the order
+    string stringToLog() const override;
+    // Constructors and Destructor
 
-    // Constructor
+    /**
+     * @brief Default constructor
+     */
     Order();
 
-    // Destructor to clean up dynamic memory
-    virtual ~Order();
-
-    // Copy constructor for deep copying dynamic data members
+    /**
+     * @brief Copy constructor
+     * @param other Order to copy
+     */
     Order(const Order &other);
 
-    // Assignment operator for deep copying when assigning one order to another
+    /**
+     * @brief Destructor
+     */
+    virtual ~Order();
+
+    // Assignment Operator
+
+    /**
+     * @brief Assignment operator
+     * @param other Order to assign from
+     * @return Reference to this Order
+     */
     Order &operator=(const Order &other);
 
-    // Virtual method to validate an order, returns true if valid
-    virtual bool validate() const;
+    // Pure Virtual Methods
 
-    // Virtual method to execute the order if it's valid
-    virtual void execute();
+    /**
+     * @brief Validate the order
+     * @return True if valid, false otherwise
+     */
+    virtual bool validate() = 0;
 
-    // Method to get a string representation of the order
-    virtual std::string toString() const;
+    /**
+     * @brief Execute the order
+     */
+    virtual void execute() = 0;
 
-    // Stream insertion operator to output the order's details
+    // Stream Insertion Operator
+
+    /**
+     * @brief Stream insertion operator
+     * @param os Output stream
+     * @param order Order to output
+     * @return Reference to output stream
+     */
     friend std::ostream &operator<<(std::ostream &os, const Order &order);
+
+    // Getters
+
+    /**
+     * @brief Get the description of the order
+     * @return Description string
+     */
+    std::string getDescription() const;
+
+    /**
+     * @brief Get the effect of the order
+     * @return Effect string
+     */
+    std::string getEffect() const;
+
+protected:
+    std::string *description; /** Description of the order */
+    std::string *effect;      /** Effect of the order after execution */
+    bool *executed;           /** Whether the order has been executed */
 };
 
-// Derived classes for specific order types
+// Derived Order Classes
 
-// Deploy order class
-class deployOrder : public Order
+/**
+ * @brief Deploy Order Class
+ */
+class Deploy : public Order
 {
 public:
-    deployOrder();                  // Constructor for deploy order
-    bool validate() const override; // Override to validate deploy order
-    void execute() override;        // Override to execute deploy order
+    // Constructors and Destructor
+    /**
+     * @brief Deploy Order Class
+     */
+    Deploy();
+    Deploy(Player *player, Territory *target, int units);
+    Deploy(const Deploy &other);
+    ~Deploy();
+
+    Deploy &operator=(const Deploy &other);
+
+    bool validate() override;
+    void execute() override;
+
+private:
+    Player *player;
+    Territory *target;
+    int units;
 };
 
-// Advance order class
-class advanceOrder : public Order
+/**
+ * @brief Advance Order Class
+ */
+class Advance : public Order
 {
 public:
-    advanceOrder();                 // Constructor for advance order
-    bool validate() const override; // Override to validate advance order
-    void execute() override;        // Override to execute advance order
+    Advance();
+    Advance(Player *player, Territory *source, Territory *target, int units);
+    Advance(const Advance &other);
+    ~Advance();
+    Advance &operator=(const Advance &other);
+
+    bool validate() override;
+    void execute() override;
+
+private:
+    Player *player;
+    Territory *source;
+    Territory *target;
+    int units;
 };
 
-// Bomb order class
-class bombOrder : public Order
+/**
+ * @brief Bomb Order Class
+ */
+class Bomb : public Order
 {
 public:
-    bombOrder();                    // Constructor for bomb order
-    bool validate() const override; // Override to validate bomb order
-    void execute() override;        // Override to execute bomb order
+    Bomb();
+    Bomb(Player *player, Territory *target);
+    Bomb(const Bomb &other);
+    ~Bomb();
+
+    Bomb &operator=(const Bomb &other);
+
+    bool validate() override;
+    void execute() override;
+
+private:
+    Player *player;
+    Territory *target;
 };
 
-// Blockade order class
-class blockadeOrder : public Order
+/**
+ * @brief Blockade Order Class
+ */
+class Blockade : public Order
 {
 public:
-    blockadeOrder();                // Constructor for blockade order
-    bool validate() const override; // Override to validate blockade order
-    void execute() override;        // Override to execute blockade order
+    Blockade();
+    Blockade(Player *player, Territory *target);
+    Blockade(const Blockade &other);
+    ~Blockade();
+
+    Blockade &operator=(const Blockade &other);
+
+    bool validate() override;
+    void execute() override;
+
+private:
+    Player *player;
+    Territory *target;
 };
 
-// Airlift order class
-class airliftOrder : public Order
+/**
+ * @brief Airlift Order Class
+ */
+class Airlift : public Order
 {
 public:
-    airliftOrder();                 // Constructor for airlift order
-    bool validate() const override; // Override to validate airlift order
-    void execute() override;        // Override to execute airlift order
+    Airlift();
+    Airlift(Player *player, Territory *source, Territory *target, int units);
+    Airlift(const Airlift &other);
+    ~Airlift();
+
+    Airlift &operator=(const Airlift &other);
+
+    bool validate() override;
+    void execute() override;
+
+private:
+    Player *player;
+    Territory *source;
+    Territory *target;
+    int units;
 };
 
-// Negotiate order class
-class negotiateOrder : public Order
+/**
+ * @brief Negotiate Order Class
+ */
+class Negotiate : public Order
 {
 public:
-    negotiateOrder();               // Constructor for negotiate order
-    bool validate() const override; // Override to validate negotiate order
-    void execute() override;        // Override to execute negotiate order
+    Negotiate();
+    Negotiate(Player *player, Player *targetPlayer);
+    Negotiate(const Negotiate &other);
+    ~Negotiate();
+    Negotiate &operator=(const Negotiate &other);
+
+    bool validate() override;
+    void execute() override;
+
+private:
+    Player *player;
+    Player *targetPlayer;
 };
 
-// Class to manage a list of orders
-class orderList
+/**
+ * @brief OrdersList Class
+ */
+class OrdersList : public Subject, public Iloggable
+{
+public:
+    // Constructors and Destructor
+    OrdersList();
+    OrdersList(const OrdersList &other);
+    ~OrdersList();
+
+    OrdersList &operator=(const OrdersList &other);
+
+    /**
+     * @brief Add an order to the list
+     * @param order Pointer to the order to add
+     */
+    void add(Order *order);
+
+    /**
+     * @brief Remove an order from the list
+     * @param index Index of the order to remove
+     */
+    void remove(int index);
+
+    /**
+     * @brief Move an order within the list
+     * @param fromIndex Current index of the order
+     * @param toIndex New index for the order
+     */
+    void move(int fromIndex, int toIndex);
+
+    /**
+     * @brief Get the list of orders
+     * @return Constant reference to the vector of order pointers
+     */
+    const std::vector<Order *> &getOrders() const;
+
+    std::string stringToLog() const override;
+
+    // Stream Insertion Operator
+
+    /**
+     * @brief Stream insertion operator for OrdersList
+     * @param os Output stream
+     * @param ordersList OrdersList to output
+     * @return Reference to output stream
+     */
+    friend std::ostream &operator<<(std::ostream &os, const OrdersList &ordersList);
+
+private:
+    std::vector<Order *> *orders; /**< Pointer to the vector of Order pointers */
+};
+
+class CheaterOrder : public Order
 {
 private:
-    std::vector<Order *> orders; // Vector to store a list of Order pointers
+    Player *player;
 
 public:
-    // Destructor to clean up dynamic memory in the orders list
-    ~orderList();
+    CheaterOrder(Player *p);
+    CheaterOrder(const CheaterOrder &other);
+    ~CheaterOrder();
 
-    // Method to add a new order to the list
-    void addOrder(Order *order);
+    CheaterOrder &operator=(const CheaterOrder &other);
 
-    // Method to remove an order from the list by index
-    void removeOrder(int index);
-
-    // Method to move an order from one index to another in the list
-    void moveOrder(int oldIndex, int newIndex);
-
-    // Method to display all orders in the list
-    void showAllOrders() const;
-
-    // Stream insertion operator to output all orders in the list
-    friend std::ostream &operator<<(std::ostream &os, const orderList &ordersList);
+    bool validate();
+    void execute();
 };
 
 #endif // ORDERS_H
